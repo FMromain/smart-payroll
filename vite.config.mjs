@@ -7,34 +7,46 @@ import jsconfigPaths from 'vite-jsconfig-paths';
 // ----------------------------------------------------------------------
 
 export default defineConfig({
+  // Vite plugins to include React and jsconfigPaths
   plugins: [react(), jsconfigPaths()],
-  // https://github.com/jpuri/react-draft-wysiwyg/issues/1317
-  base: '/free', // accessing env variable is not possible here. So hard coding this.
+
+  // Base URL for the app (hardcoded to '/free' in your case)
+  base: '/free',
+
+  // Define global window object to avoid compatibility issues with libraries using 'global'
   define: {
     global: 'window'
   },
+
+  // Resolve configuration for module paths
   resolve: {
     alias: [
       {
+        // Handles tilde (~) imports from node_modules
         find: /^~(.+)/,
         replacement: path.join(process.cwd(), 'node_modules/$1')
       },
       {
+        // Allows importing from 'src' folder using 'src/...' paths
         find: /^src(.+)/,
         replacement: path.join(process.cwd(), 'src/$1')
       }
     ]
   },
+
+  // Server configuration for development
   server: {
-    // this ensures that the browser opens upon server start
+    // Automatically open the browser when server starts
     open: true,
-    // this sets a default port to 3000
+    // Set default development server port to 3000
     port: 3000
   },
+
+  // Preview configuration (similar to server but for production preview)
   preview: {
-    // this ensures that the browser opens upon preview start
+    // Automatically open the browser when preview starts
     open: true,
-    // this sets a default port to 3000
+    // Set default preview server port to 3000
     port: 3000
   }
 });
